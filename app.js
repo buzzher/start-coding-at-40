@@ -6,22 +6,44 @@ var express         = require('express'),
     methodOverRide  = require('method-override');
     
 // CONFIGARATION
+mongoose.connect('mongodb://localhost/coding-after-40');
 app.use(bodyParser.urlencoded ({extended: true}));
 app.set('view engine', 'ejs');      //__dirname reffer to the directory that the script is running 280 1:58
 app.use(express.static(__dirname + '/public')); //used to be app.use(express.static('public')).. better to do it with __dirname
 app.use(methodOverRide('_method'));
 
+// MONGOOSE SETOP
+var CodingSchema = new mongoose.Schema({
+    title: String,
+    body: String,
+    create: {type: Date, default: Date.now}
+});
+
+var Codes = mongoose.model('codingAfter40', CodingSchema);
+
+Codes.create({
+    title: 'Start code',
+    body: 'Good to learn coding'
+});
+
 // INDEX
 app.get('/', function(req, res) {
-    res.redirect('/start-coding-after-40');
+    res.redirect('/index');
 });
 
 // GET
-app.get('/start-coding-after-40', function(req, res) {
-    res.send('GET');
+app.get('/index', function(req, res) {
+    Codes.find('/', function(err, callBackUsers) {
+        if(err) {
+            console.log(err);
+        } else {
+            res.render('index', {users: callBackUsers});
+        }
+    });
 });
 
 // NEW
+
 
 // SHOW
 
