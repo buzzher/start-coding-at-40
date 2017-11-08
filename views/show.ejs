@@ -1,0 +1,21 @@
+<% include partials/header %>
+
+<div class='ui main text container segment'>
+    <div class='ui huge header'><%= CBShow.title %></div>
+    <div class='ui top attached'>
+        <div class='item'>
+            <img class='ui centered rounded image' src='<%=  %>'>
+            <div class='content'>
+                <span><%= CBShow.create.toDateString() %></span>
+            </div>
+            <div class='description'>
+                <p><%= CBShow.body %></p>
+                <!--<p><em>Submited By < %= show.author.username %></em></p>-->
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+<% include partials/footer %>

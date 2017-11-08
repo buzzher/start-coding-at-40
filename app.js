@@ -60,9 +60,41 @@ app.post('/index', function(req, res) {
 });
 
 // SHOW
-// app.post('/')
+app.get('/index/:id', function(req,res) {
+    Codes.findById(req.params.id, function(err, callBackShow) {
+        if(err) {
+            console.log(err);
+        } else {
+            // console.log(req.params.id);
+            res.render('show', {CBShow: callBackShow});
+        }
+    });
+    
+});
 
 // EDIT
+app.get('/index/:id/edit', function(req, res) {
+    Codes.findById(req.params.id, function(err, callBackEdit) {
+        if(err) {
+            console.log(err);
+        } else {
+            // console.log(req.params.id);
+            res.render('edit', {CBEdit: callBackEdit});
+        }
+    });
+});
+
+// UPDATE
+app.put('/index/:id', function(req, res) {
+    Codes.findByIdAndUpdate(req.params.id, req.body.userPost, function(err, callBackEdit) {
+        if(err) {
+            console.log(err);
+        } else {
+            // console.log(req.params.id);
+            res.redirect('/index/' + callBackEdit._id);
+        }
+    });
+});
 
 // DELETE
     

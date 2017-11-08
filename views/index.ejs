@@ -1,5 +1,31 @@
-<h4>INDEX PAGE</h4>
-<p> <% users.forEach(function(user) { %></p>
-<p> <%= user.title %></p>
-<p> <%= user.body %></p>
-<p> <% }); %></p>
+<% include partials/header %>
+
+<div class='ui main text container'>
+    <div class='ui huge header'>Learn Coding After 40 App</div>
+    <div class='ui divided items'>
+        <% users.forEach(function(user) { %>
+            <div class='item'>
+                <!--<div class='image'> <!-- taking care of the big images -->
+                <!--    <img src='' class=''>-->
+                <!--</div>-->
+                <div class='content'>
+                    <a class='header' href='/index/<%= user._id %>'> <%= user.title %></a>
+                    <div class='meta'>
+                        <span class='cinema'> <%= user.create.toDateString() %></span> <!-- -->
+                    </div>
+                    <div class='description'>
+                        <p> <%= user.body.substring(0, 100); %>..</p> <!-- make sure there is a body to each of the blog post -->
+                    </div>
+                    <div class='extra'>
+                        <a class='ui floated basic violet button' href='/index/<%= user._id %>'><!-- /space/ _id like 324234bfeuroh3ru3or -->
+                            Read More
+                            <i class='right chevron icon'></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div>
+
+<% include partials/footer %>
