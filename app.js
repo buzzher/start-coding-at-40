@@ -21,10 +21,10 @@ var CodingSchema = new mongoose.Schema({
 
 var Codes = mongoose.model('codingAfter40', CodingSchema);
 
-Codes.create({
-    title: 'Start code',
-    body: 'Good to learn coding'
-});
+// Codes.create({
+//     title: 'Start code',
+//     body: 'Good to learn coding'
+// });
 
 // INDEX
 app.get('/', function(req, res) {
@@ -43,9 +43,24 @@ app.get('/index', function(req, res) {
 });
 
 // NEW
+app.get('/index/new', function(req, res) {
+    res.render('new');
+});
 
+// CREATE
+app.post('/index', function(req, res) {
+    Codes.create(req.body.userPost, function(err, callBackPost) {
+        if(err) {
+            console.log(err);
+        } else {
+            // console.log('Body Submited By: ' + req.body.moon);
+            res.redirect('/index');
+        }
+    });
+});
 
 // SHOW
+// app.post('/')
 
 // EDIT
 
