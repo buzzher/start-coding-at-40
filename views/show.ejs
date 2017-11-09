@@ -12,10 +12,39 @@
                 <p><%= CBShow.body %></p>
                 <!--<p><em>Submited By < %= show.author.username %></em></p>-->
             </div>
-            
-            
+            <a class='ui orange basic button' href='/index/<%= CBShow._id %>/edit'>Edit</a>
+            <form id='delete' class='' action='/index/<%= CBShow._id %>?_method=DELETE' method='POST'>
+                <button class='ui red basic button'>DELETE</button>
+            </form>
         </div>
     </div>
+</div>
+
+<!--*********************************** COMMENTS **************************-->
+
+<div class='container well'>
+    <div class='text-right'>
+        <a class='btn btn-success' href='/index/<%= CBShow._id %>/comments/new'>Add New Comment</a>
+    </div>
+    <% CBShow.comments.forEach(function(comment) { %>
+    
+        <div class='col-md-12'>
+            <hr>
+            <strong><%= comment.author %></strong>
+            <span class='pull-right'><%= CBShow.create.toDateString() %></span>
+            <p>
+                <%= comment.text %>
+            </p>
+            <!--< % if(currentUserMoon.username && comment.author.id.equals(currentUserMoon._id)) { %>-->
+            <a class='ui orange basic button' href='/index/<%= CBShow._id %>/comments/<%= comment._id %>/edit'>Edit</a>
+            <form  id='delete' class='' action='/index/<%= CBShow._id %>/comments/<%= comment._id %>?_method=DELETE' method='POST'>
+                <button class='ui red basic button'>DELETE</button>
+            </form>
+            <!--< % } else { } %>-->
+            
+        </div>
+        
+    <% }); %>
 </div>
 
 <% include partials/footer %>

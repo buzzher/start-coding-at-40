@@ -3,7 +3,8 @@ var express         = require('express'),
     bodyParser      = require('body-parser'),
     ejs             = require('ejs'),
     mongoose        = require('mongoose'),
-    methodOverRide  = require('method-override');
+    methodOverRide  = require('method-override'),
+    CodingComment   = require('./models/commentsCoding');
     
 // CONFIGARATION
 mongoose.connect('mongodb://localhost/coding-after-40');
@@ -12,11 +13,17 @@ app.set('view engine', 'ejs');      //__dirname reffer to the directory that the
 app.use(express.static(__dirname + '/public')); //used to be app.use(express.static('public')).. better to do it with __dirname
 app.use(methodOverRide('_method'));
 
-// MONGOOSE SETOP
+// MONGOOSE SETUP
 var CodingSchema = new mongoose.Schema({
     title: String,
     body: String,
-    create: {type: Date, default: Date.now}
+    create: {type: Date, default: Date.now},
+        comments: [{
+            // text: String,
+            // author: String
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'CodingCommentModel' //req.body.campComment in the POST comments sec in app.js
+        }]
 });
 
 var Codes = mongoose.model('codingAfter40', CodingSchema);
@@ -61,7 +68,7 @@ app.post('/index', function(req, res) {
 
 // SHOW
 app.get('/index/:id', function(req,res) {
-    Codes.findById(req.params.id, function(err, callBackShow) {
+    Codes.findById(req.params.id).populate('comments').exec(function(err, callBackShow) {
         if(err) {
             console.log(err);
         } else {
@@ -97,6 +104,60 @@ app.put('/index/:id', function(req, res) {
 });
 
 // DELETE
+app.delete('/index/:id', function(req,res) {
+    Codes.findByIdAndRemove(req.params.id, function(err, callbackDelete) {
+        if(err) {
+            console.log(err);
+        } else {
+            // console.log(req.params.id);
+            res.redirect('/index');
+        }
+    });
+});
+
+// ****************************** COMMENTS ********************************
+
+// CREATE COMMENTS
+app.get('/index/:id/comments/new', function(req, res) {
+    Codes.findById(req.params.id, function(err, callbackComments) {
+        if(err) {
+            console.log(err);
+        } else {
+            // console.log('Body Submited By: ' + req.body.moon);
+            res.render('comments/new', {comment: callbackComments});
+        }
+    });
+});
+
+// POST COMMENTS
+app.post('/index/:id/comments', function(req, res) {
+    Codes.findById(req.params.id, function(err, callBackPost) {
+        if(err) {
+            console.log(err);
+        } else {
+            CodingComment.create(req.body.userComment, function(err, callbackPostComment) {
+                if(err) {
+                    console.log(err);
+                } else {
+                    
+                    // console.log('Body Submited By: ' + req.body.moon);
+                    callBackPost.comments.push(callbackPostComment);
+                    callBackPost.save();
+                    console.log(callBackPost);
+                    res.redirect('/index/' + callBackPost._id);
+                }
+            });
+        }
+    });
+    
+});
+
+// EDIT COMMENTS
+
+// UPDATE COMMENTS
+
+// DELETE COMMENTS
+
     
 app.listen(process.env.PORT, process.env.IP, function() {
    console.log('Server Start-coding-after-40 app has started');
