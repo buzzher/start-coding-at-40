@@ -10,7 +10,7 @@
             </div>
             <div class='description'>
                 <p><%= CBShow.body %></p>
-                <!--<p><em>Submited By < %= show.author.username %></em></p>-->
+                <p><em>Submited By <%= CBShow.author.username %></em></p>
             </div>
             <a class='ui orange basic button' href='/index/<%= CBShow._id %>/edit'>Edit</a>
             <form id='delete' class='' action='/index/<%= CBShow._id %>?_method=DELETE' method='POST'>

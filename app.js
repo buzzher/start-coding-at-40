@@ -6,7 +6,8 @@ var express         = require('express'),
     passport        = require('passport'),
     LocalStrategy   = require('passport-local'),
     Codes          = require('./models/coding'),
-    CodingComment   = require('./models/commentsCoding');
+    CodingComment   = require('./models/commentsCoding'),
+    User            = require('./models/user');
     
 // CONFIGARATION
 mongoose.connect('mongodb://localhost/coding-after-40');
@@ -29,7 +30,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next) {
-    res.locals.currentUserMoon = req.user; // req.user has the id like 123kr312 and the username like buzz
+    res.locals.currentUserCodes = req.user; // req.user has the id like 123kr312 and the username like buzz
     next();
 });     //whatever we put in res.local will be availble inside out temlates
 
@@ -93,6 +94,7 @@ app.get('/index/:id', function(req,res) {
             console.log(err);
         } else {
             // console.log(req.params.id);
+            // console.log(req.user.username);
             res.render('show', {CBShow: callBackShow});
         }
     });
@@ -205,9 +207,39 @@ app.delete('/index/:id/comments/:comment_id', function(req, res) {
     });
 });
 
+// ************************** ATHENTICATION ************************
+
 // REGISTER
 app.get('/register', function(req, res) {
     res.render('register')
+});
+
+// POST REGISTER
+app.post('/register', function(req, res) {
+    var newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, function(err, callBackRegister) {
+        if(err) {
+            console.log(err);
+            return res.render('register');
+        } else {
+            passport.authenticate('local')(req,res, function() {
+                console.log('register as ' + req.params.username);
+            res.redirect('/index');
+            });
+        }
+    });
+});
+
+// LOGIN
+app.get('/login', function(req, res) {
+    res.render('login');
+});
+
+// POST LOGIN
+app.post('/login', passport.authenticate('local', {
+    successRedirect: '/index',
+    failureRedirect: '/login',
+}), function(req, res) { //this function not important
 });
     
 app.listen(process.env.PORT, process.env.IP, function() {
