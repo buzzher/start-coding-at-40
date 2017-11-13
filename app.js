@@ -1,13 +1,14 @@
 var express         = require('express'),
     app             = express(),
     bodyParser      = require('body-parser'),
-    mongoose        = require('mongoose'),
     methodOverRide  = require('method-override'),
+    mongoose        = require('mongoose'),
     passport        = require('passport'),
     LocalStrategy   = require('passport-local'),
     Codes          = require('./models/coding'),
     CodingComment   = require('./models/commentsCoding'),
-    User            = require('./models/user');
+    User            = require('./models/user'),
+    seedDB           = require('./seeds');
     
 // CONFIGARATION
 mongoose.connect('mongodb://localhost/coding-after-40');
@@ -15,10 +16,11 @@ app.use(bodyParser.urlencoded ({extended: true}));
 app.set('view engine', 'ejs');      //__dirname reffer to the directory that the script is running 280 1:58
 app.use(express.static(__dirname + '/public')); //used to be app.use(express.static('public')).. better to do it with __dirname
 app.use(methodOverRide('_method'));
+seedDB();
 
 //PASSOPRT CONFIGARATION
 app.use(require('express-session')({
-    secret: 'Moon App Good Nice',
+    secret: 'Coding after 40 App Good Nice',
     resave: false,
     saveUninitialized: false
 }));
@@ -30,9 +32,9 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next) {
-    res.locals.currentUserCodes = req.user; // req.user has the id like 123kr312 and the username like buzz
+    res.locals.currentUserCodes = req.user; //
     next();
-});     //whatever we put in res.local will be availble inside out temlates
+});
 
 // MONGOOSE SETUP
 // // var CodingSchema = new mongoose.Schema({
@@ -61,6 +63,7 @@ app.get('/', function(req, res) {
 
 // GET
 app.get('/index', function(req, res) {
+    console.log('INDEX ' + req.user + ' - if undefind, need to log in');
     Codes.find('/', function(err, callBackUsers) {
         if(err) {
             console.log(err);
@@ -77,24 +80,30 @@ app.get('/index/new', function(req, res) {
 
 // CREATE
 app.post('/index', function(req, res) {
+    var author = {  // * * * * * * * * * * * * * * * * submited by .. field, that how to create it
+                    id:         req.user._id,
+                    username:   req.user.username
+    };
+    req.body.userPost.author = author;
+    
     Codes.create(req.body.userPost, function(err, callBackPost) {
         if(err) {
             console.log(err);
         } else {
-            // console.log('Body Submited By: ' + req.body.moon);
             res.redirect('/index');
         }
     });
 });
 
 // SHOW
-app.get('/index/:id', function(req,res) {
+app.get('/index/:id', function(req, res) {
     Codes.findById(req.params.id).populate('comments').exec(function(err, callBackShow) {
         if(err) {
             console.log(err);
         } else {
             // console.log(req.params.id);
-            // console.log(req.user.username);
+            // console.log('user name is: ' + req.author.username);
+            console.log('Body Submited By: ' + req.user.username);
             res.render('show', {CBShow: callBackShow});
         }
     });
@@ -162,7 +171,10 @@ app.post('/index/:id/comments', function(req, res) {
                     console.log(err);
                 } else {
                     
-                    // console.log('Body Submited By: ' + req.body.moon);
+                    console.log('Body Submited By: ' + req.user.username);
+                    callbackPostComment.author.id = req.user._id;
+                    callbackPostComment.author.username = req.user.username;
+                    callbackPostComment.save();
                     callBackPost.comments.push(callbackPostComment);
                     callBackPost.save();
                     console.log(callBackPost);
@@ -222,7 +234,7 @@ app.post('/register', function(req, res) {
             console.log(err);
             return res.render('register');
         } else {
-            passport.authenticate('local')(req,res, function() {
+            passport.authenticate('local')(req, res, function() {
                 console.log('register as ' + req.params.username);
             res.redirect('/index');
             });
@@ -240,6 +252,12 @@ app.post('/login', passport.authenticate('local', {
     successRedirect: '/index',
     failureRedirect: '/login',
 }), function(req, res) { //this function not important
+});
+
+app.get('/logout', function(req, res) {
+    console.log(req.user.username + ' Loggedout');
+    req.logout();
+    res.redirect('/index');
 });
     
 app.listen(process.env.PORT, process.env.IP, function() {
