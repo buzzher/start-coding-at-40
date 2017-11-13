@@ -74,12 +74,12 @@ app.get('/index', function(req, res) {
 });
 
 // NEW
-app.get('/index/new', function(req, res) {
+app.get('/index/new', isLoggedIn, function(req, res) {
     res.render('new');
 });
 
 // CREATE
-app.post('/index', function(req, res) {
+app.post('/index', isLoggedIn, function(req, res) {
     var author = {  // * * * * * * * * * * * * * * * * submited by .. field, that how to create it
                     id:         req.user._id,
                     username:   req.user.username
@@ -103,7 +103,7 @@ app.get('/index/:id', function(req, res) {
         } else {
             // console.log(req.params.id);
             // console.log('user name is: ' + req.author.username);
-            console.log('Body Submited By: ' + req.user.username);
+            // console.log('Body Submited By: ' + req.user.username);
             res.render('show', {CBShow: callBackShow});
         }
     });
@@ -149,7 +149,7 @@ app.delete('/index/:id', function(req,res) {
 // ****************************** COMMENTS ********************************
 
 // CREATE COMMENTS
-app.get('/index/:id/comments/new', function(req, res) {
+app.get('/index/:id/comments/new', isLoggedIn, function(req, res) {
     Codes.findById(req.params.id, function(err, callbackComments) {
         if(err) {
             console.log(err);
@@ -161,7 +161,7 @@ app.get('/index/:id/comments/new', function(req, res) {
 });
 
 // POST COMMENTS
-app.post('/index/:id/comments', function(req, res) {
+app.post('/index/:id/comments', isLoggedIn, function(req, res) {
     Codes.findById(req.params.id, function(err, callBackPost) {
         if(err) {
             console.log(err);
@@ -254,11 +254,19 @@ app.post('/login', passport.authenticate('local', {
 }), function(req, res) { //this function not important
 });
 
+// LOGOUT
 app.get('/logout', function(req, res) {
     console.log(req.user.username + ' Loggedout');
     req.logout();
     res.redirect('/index');
 });
+
+function isLoggedIn(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+}
     
 app.listen(process.env.PORT, process.env.IP, function() {
    console.log('Server Start-coding-after-40 app has started');
