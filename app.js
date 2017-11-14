@@ -36,26 +36,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-// MONGOOSE SETUP
-// // var CodingSchema = new mongoose.Schema({
-// //     title: String,
-// //     body: String,
-// //     create: {type: Date, default: Date.now},
-// //         comments: [{
-// //             // text: String,
-// //             // author: String
-// //             type: mongoose.Schema.Types.ObjectId,
-// //             ref: 'CodingCommentModel' //req.body.campComment in the POST comments sec in app.js
-// //         }]
-// });
-
-// var Codes = mongoose.model('codingAfter40', CodingSchema);
-
-// Codes.create({
-//     title: 'Start code',
-//     body: 'Good to learn coding'
-// });
-
 // INDEX
 app.get('/', function(req, res) {
     res.redirect('/index');
@@ -111,19 +91,19 @@ app.get('/index/:id', function(req, res) {
 });
 
 // EDIT
-app.get('/index/:id/edit', function(req, res) {
+app.get('/index/:id/edit', checkUserPostOwnership, function(req, res) {
     Codes.findById(req.params.id, function(err, callBackEdit) {
-        if(err) {
-            console.log(err);
-        } else {
-            // console.log(req.params.id);
+        // if(err) {
+        //     console.log(err);
+        // } else {
+        //     // console.log(req.params.id);
             res.render('edit', {CBEdit: callBackEdit});
-        }
+        // }
     });
 });
 
 // UPDATE
-app.put('/index/:id', function(req, res) {
+app.put('/index/:id', checkUserPostOwnership, function(req, res) {
     Codes.findByIdAndUpdate(req.params.id, req.body.userPost, function(err, callBackEdit) {
         if(err) {
             console.log(err);
@@ -135,7 +115,7 @@ app.put('/index/:id', function(req, res) {
 });
 
 // DELETE
-app.delete('/index/:id', function(req,res) {
+app.delete('/index/:id', checkUserPostOwnership, function(req,res) {
     Codes.findByIdAndRemove(req.params.id, function(err, callbackDelete) {
         if(err) {
             console.log(err);
@@ -187,7 +167,7 @@ app.post('/index/:id/comments', isLoggedIn, function(req, res) {
 });
 
 // EDIT COMMENTS
-app.get('/index/:id/comments/:comment_id/edit', function(req, res) {
+app.get('/index/:id/comments/:comment_id/edit', checkCommentOwnership, function(req, res) {
     CodingComment.findById(req.params.comment_id, function(err, callBackCommentEdit) {
         if(err) {
             console.log(err);
@@ -198,7 +178,7 @@ app.get('/index/:id/comments/:comment_id/edit', function(req, res) {
 });
 
 // UPDATE COMMENTS
-app.put('/index/:id/comments/:comment_id', function(req, res) {
+app.put('/index/:id/comments/:comment_id', checkCommentOwnership, function(req, res) {
     CodingComment.findByIdAndUpdate(req.params.comment_id, req.body.userComment, function(err, callBackEdit) {
         if(err) {
             console.log(err);
@@ -209,7 +189,7 @@ app.put('/index/:id/comments/:comment_id', function(req, res) {
 });
 
 // DELETE COMMENTS
-app.delete('/index/:id/comments/:comment_id', function(req, res) {
+app.delete('/index/:id/comments/:comment_id', checkCommentOwnership, function(req, res) {
     CodingComment.findByIdAndRemove(req.params.comment_id, function(err, callBack) {
         if(err) {
             console.log(err);
@@ -261,11 +241,59 @@ app.get('/logout', function(req, res) {
     res.redirect('/index');
 });
 
+//  * * * * * * * * * * * * * AUTHENTICATION/AUTHORIZATION * * * * * * * * * * *
+// AUTHENTICATION
 function isLoggedIn(req, res, next) {
     if(req.isAuthenticated()) {
         return next();
     }
     res.redirect('/login');
+}
+
+// AUTHORIZATION USER POST
+function checkUserPostOwnership(req, res, next) {
+    if(req.isAuthenticated()) {
+        Codes.findById(req.params.id, function(err, code) { //*****move to if statment for Authorization
+            if(err) {
+                // req.flash('error', 'Campground not found');
+                console.log(err);
+                res.redirect('back');
+            } else {
+                if(code.author.id.equals(req.user._id)) { // ***** if author id === call back of foundCampground.author.id
+                    next();
+                } else {
+                    // res.send('YOU DO NO HAVE PERMISSION TO DO THAT!!!'); //have to be user name Mongo/ if log in wit diff user name, we cant edit it
+                    //  req.flash('error', 'You dont have permition to do that');
+                    res.redirect('back');
+                }
+            }
+        });
+    } else {
+        res.send('YOU NEED TO BE LOGGED IN TO DO THAT!!!');
+        //  req.flash('error', 'You need to be logged in to do that');
+        res.redirect('back');
+    }
+};
+
+// AUTHORIZATION USER COMMENT
+function checkCommentOwnership(req, res, next) {
+    if(req.isAuthenticated()) {
+        CodingComment.findById(req.params.comment_id, function(err, callBackComment) {
+            if(err) {
+                console.log(err);
+            } else {
+                if(callBackComment.author.id.equals(req.user._id)) {
+                    next();
+                } else {
+                    res.send('YOU DO NO HAVE PERMISSION TO DO THAT!!!');
+                    res.redirect('back');
+                }
+            }
+        });
+    } else {
+        res.send('YOU DO NO HAVE PERMISSION TO DO THAT!!!');
+        res.redirect('back');
+    }
 }
     
 app.listen(process.env.PORT, process.env.IP, function() {
