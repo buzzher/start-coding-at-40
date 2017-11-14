@@ -3,12 +3,13 @@ var express         = require('express'),
     bodyParser      = require('body-parser'),
     methodOverRide  = require('method-override'),
     mongoose        = require('mongoose'),
+    flash           = require('connect-flash'),
     passport        = require('passport'),
     LocalStrategy   = require('passport-local'),
-    Codes          = require('./models/coding'),
+    Codes           = require('./models/coding'),
     CodingComment   = require('./models/commentsCoding'),
     User            = require('./models/user'),
-    seedDB           = require('./seeds');
+    seedDB          = require('./seeds');
     
 // CONFIGARATION
 mongoose.connect('mongodb://localhost/coding-after-40');
@@ -16,6 +17,7 @@ app.use(bodyParser.urlencoded ({extended: true}));
 app.set('view engine', 'ejs');      //__dirname reffer to the directory that the script is running 280 1:58
 app.use(express.static(__dirname + '/public')); //used to be app.use(express.static('public')).. better to do it with __dirname
 app.use(methodOverRide('_method'));
+app.use(flash());
 seedDB();
 
 //PASSOPRT CONFIGARATION
@@ -33,6 +35,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next) {
     res.locals.currentUserCodes = req.user; //
+    res.locals.error            = req.flash('error');
+    res.locals.success          = req.flash('success');
     next();
 });
 
@@ -158,7 +162,9 @@ app.post('/index/:id/comments', isLoggedIn, function(req, res) {
                     callBackPost.comments.push(callbackPostComment);
                     callBackPost.save();
                     console.log(callBackPost);
+                    req.flash('success', 'SUCCESSFULY ADDED COMMENT');
                     res.redirect('/index/' + callBackPost._id);
+                    
                 }
             });
         }
@@ -242,36 +248,28 @@ app.get('/logout', function(req, res) {
 });
 
 //  * * * * * * * * * * * * * AUTHENTICATION/AUTHORIZATION * * * * * * * * * * *
-// AUTHENTICATION
-function isLoggedIn(req, res, next) {
-    if(req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login');
-}
-
 // AUTHORIZATION USER POST
 function checkUserPostOwnership(req, res, next) {
     if(req.isAuthenticated()) {
-        Codes.findById(req.params.id, function(err, code) { //*****move to if statment for Authorization
+        Codes.findById(req.params.id, function(err, code) {
             if(err) {
-                // req.flash('error', 'Campground not found');
+                req.flash('error', 'USER NOT FOUND');
                 console.log(err);
                 res.redirect('back');
             } else {
-                if(code.author.id.equals(req.user._id)) { // ***** if author id === call back of foundCampground.author.id
+                if(code.author.id.equals(req.user._id)) {
                     next();
                 } else {
-                    // res.send('YOU DO NO HAVE PERMISSION TO DO THAT!!!'); //have to be user name Mongo/ if log in wit diff user name, we cant edit it
-                    //  req.flash('error', 'You dont have permition to do that');
+                    // res.send('YOU DO NOT HAVE PERMISSION TO DO THAT!!!');
+                    req.flash('error', 'YOU DON`T HAVE PERMITION TO DO THAT');
                     res.redirect('back');
                 }
             }
         });
     } else {
-        res.send('YOU NEED TO BE LOGGED IN TO DO THAT!!!');
-        //  req.flash('error', 'You need to be logged in to do that');
-        res.redirect('back');
+        // res.send('YOU NEED TO BE LOGGED IN TO DO THAT!!!');
+        req.flash('error', 'YOU NEED TO BE LOGGED IN TO DO THAT!!!');
+        res.redirect('/login');
     }
 };
 
@@ -285,17 +283,26 @@ function checkCommentOwnership(req, res, next) {
                 if(callBackComment.author.id.equals(req.user._id)) {
                     next();
                 } else {
-                    res.send('YOU DO NO HAVE PERMISSION TO DO THAT!!!');
+                    res.send('YOU DO NOT HAVE PERMISSION TO DO THAT!!!');
                     res.redirect('back');
                 }
             }
         });
     } else {
-        res.send('YOU DO NO HAVE PERMISSION TO DO THAT!!!');
+        res.send('YOU DO NOT HAVE PERMISSION TO DO THAT!!!');
         res.redirect('back');
     }
 }
-    
+
+// AUTHENTICATION
+function isLoggedIn(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+    req.flash('error', 'YOU NEED TO LOGIN TO DO THAT');
+    res.redirect('/login');
+}
+
 app.listen(process.env.PORT, process.env.IP, function() {
    console.log('Server Start-coding-after-40 app has started');
 });
