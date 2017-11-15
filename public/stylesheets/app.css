@@ -13,3 +13,11 @@ i.icon {
 hr.color1 {
     color: black;
 }
+
+.input_comment input {
+    width: 300px;
+}
+
+.comment_link {
+    display: inline-flex;
+}

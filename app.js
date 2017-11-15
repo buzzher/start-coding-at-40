@@ -219,11 +219,13 @@ app.post('/register', function(req, res) {
     var newUser = new User({username: req.body.username});
     User.register(newUser, req.body.password, function(err, callBackRegister) {
         if(err) {
+            req.flash('error', err.message);
             console.log(err);
-            return res.render('register');
+            return res.redirect('/register');
         } else {
             passport.authenticate('local')(req, res, function() {
                 console.log('register as ' + req.params.username);
+                req.flash('success', 'Welcome ' + callBackRegister.username);
             res.redirect('/index');
             });
         }
@@ -236,17 +238,21 @@ app.get('/login', function(req, res) {
 });
 
 // POST LOGIN
-app.post('/login', passport.authenticate('local', {
-    successRedirect: '/index',
+app.post('/login', function(req, res, next) {
+    passport.authenticate('local', {
+    successReturnToOrRedirect: '/index',
     failureRedirect: '/login',
-}), function(req, res) { //this function not important
+    successFlash: 'Welcome ' + req.body.username + '!',
+    failureFlash: 'Your username and password do not match'
+}) (req, res, next); //this function not important
 });
 
 // LOGOUT
 app.get('/logout', function(req, res) {
     console.log(req.user.username + ' Loggedout');
+    req.flash('success', req.user.username + ' SUCCESSFULY LOGGED OUT');
     req.logout();
-    req.flash('success', 'SUCCESSFULY LOGGED OUT');
+    
     res.redirect('/index');
 });
 
@@ -265,7 +271,7 @@ function checkUserPostOwnership(req, res, next) {
                 } else {
                     // res.send('YOU DO NOT HAVE PERMISSION TO DO THAT!!!');
                     req.flash('error', 'YOU DON`T HAVE PERMITION TO DO THAT');
-                    res.redirect('back');
+                    res.redirect('/index');
                 }
             }
         });
