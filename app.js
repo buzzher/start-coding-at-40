@@ -189,6 +189,7 @@ app.put('/index/:id/comments/:comment_id', checkCommentOwnership, function(req, 
         if(err) {
             console.log(err);
         } else {
+            req.flash('success', 'SUCCESSFULY EDITED COMMENT');
             res.redirect('/index/' + req.params.id);
         }
     });
@@ -200,6 +201,7 @@ app.delete('/index/:id/comments/:comment_id', checkCommentOwnership, function(re
         if(err) {
             console.log(err);
         } else {
+            req.flash('success', 'SUCCESSFULY DELETED COMMENT');
             res.redirect('/index/' + req.params.id);
         }
     });
@@ -244,6 +246,7 @@ app.post('/login', passport.authenticate('local', {
 app.get('/logout', function(req, res) {
     console.log(req.user.username + ' Loggedout');
     req.logout();
+    req.flash('success', 'SUCCESSFULY LOGGED OUT');
     res.redirect('/index');
 });
 
