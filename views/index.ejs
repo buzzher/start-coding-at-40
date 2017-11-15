@@ -2,6 +2,13 @@
 
 <div class='ui main text container'>
     <div class='ui huge header'>Learn Coding After 40 App</div>
+    <form class='ui form'>
+        <% if(!currentUserCodes) { %>
+            <a href='/index/new' class=''><input type='text' placeholder='Add a new post' class=''></a>
+        <% } else { %>
+            <a href='/index/new' class=''><input type='text' placeholder='<%= currentUserCodes.username %> add a new post' class=''></a>
+        <% } %>
+    </form>
     <div class='ui divided items'>
         <% users.forEach(function(user) { %>
             <div class='item'>
@@ -26,6 +33,13 @@
             </div>
         <% }); %>
     </div>
+    <form class='ui form'>
+        <% if(!currentUserCodes) { %>
+            <a href='/index/new' class=''><input type='text' placeholder='Add a new post' class=''></a>
+        <% } else { %>
+            <a href='/index/new' class=''><input type='text' placeholder='<%= currentUserCodes.username %> add a new post' class=''></a>
+        <% } %>
+    </form>
 </div>
 
 <% include partials/footer %>
