@@ -2,6 +2,10 @@ i.icon {
     font-size: 2em;
 }
 
+* {
+	box-sizing: border-box;
+}
+
 .container.main {
     margin-top: 7.0em;
 }
@@ -19,5 +23,58 @@ hr.color1 {
 }
 
 .comment_link {
-    display: inline-flex;
+        display: inline-flex;
+    }
+
+ /* * * * * * * * * * * * * responsive grid * * * * * * * * * * * * * * * */
+
+/* Large desktop */
+@media (min-width: 1200px) {
+    
+}
+ 
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+    
+}
+ 
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+    
+    .collapse {
+        display: block;
+    }
+    
+    .comment_link .input_comment input {
+        width: 300px;
+    }
+    .comment_link .btn {
+        font-size: smaller;
+    }
+}
+ 
+/* Landscape phones and down */
+@media (max-width: 480px) {
+    /*navbar*/
+    .navbar a {
+        font-size: 1em;
+    }
+    
+    /*comment area*/
+    .container {
+     width: 90%;   
+    }
+    /*comment text link*/
+    .comment_link {
+        margin: 0 0 0 -20;
+    }
+    .comment_link .input_comment input {
+        width: 300px;
+    }
+    .comment_link .btn {
+        display: none;
+    }
+    
+    
+    
 }

@@ -33,9 +33,9 @@
                 <a href='/index/<%= CBShow._id %>/comments/new' class=''><input type='text' placeholder='<%= currentUserCodes.username %> add a new comment' class=''></a>
             <% } %>
         </form>
-        <div class=''>
+        <span class=''>
             <a class='btn btn-success' href='/index/<%= CBShow._id %>/comments/new'>Add New Comment</a>
-        </div>
+        </span>
     </div>
     
     <% CBShow.comments.forEach(function(comment) { %>
