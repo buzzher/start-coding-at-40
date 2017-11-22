@@ -1,12 +1,12 @@
 <% include partials/header %>
 
-<div class='ui main text container segment'>
-    <div class='ui huge header'><%= CBShow.title %></div>
+<div class='ui text container segment'>
+    <div class='ui huge header'><span class='post_header'><%= CBShow.title %></span></div>
     <div class='ui top attached'>
-        <div class='item'>
+        <div class='item item_font_post'>
             <img class='ui centered rounded image' src='<%=  %>'>
             <div class='content'>
-                <span><%= CBShow.create.toDateString() %></span>
+                <span class='post_date'><%= CBShow.create.toDateString() %></span>
             </div>
             <div class='description'>
                 <p><%= CBShow.body %></p>
@@ -43,7 +43,7 @@
         <div class='col-md-12'>
             <hr>
             <strong><%= comment.author.username %></strong>
-            <span class='pull-right'><%= CBShow.create.toDateString() %></span>
+            <span class='pull-right post_date'><%= CBShow.create.toDateString() %></span>
             <p>
                 <%= comment.text %>
             </p>

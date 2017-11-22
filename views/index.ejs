@@ -1,7 +1,22 @@
 <% include partials/header %>
 
-<div class='ui main text container'>
-    <div class='ui huge header'>Learn Coding After 40 App</div>
+<div class='ui text container'>
+    <div class='ui huge header'><span>Learn Coding After 40 App</span></div>
+    <div class='ui'>
+        <p>I so saw this <a href='https://www.womenwhocode.com/blog/patricia-ehrhardt-conquering-her-goals-and-coding-over-40' class=''>article</a> about Patricia Ehrhardt, so i thought why not to build a project, i will build a responsive website which allow users to sign up and write a post about their own story and can comment about articels of other users</p>
+        <p>I`m a person who does`t like to read much but what i like when im reading is the <b>'straight to the point'</b> stories/artice. so i deside to put rules for the story/post people post.</p>
+        <p><b>Rules:</b>
+            <ul class=''>
+                <li><b>Write your name</b></li>
+                <li><b>The road you took</b></li>
+                <li><b>How long it was take</b></li>
+                <li><b>What language did you study</b></li>
+                <li><b>Where do you work</b></li>
+                <li><b>Comments, Please Don`t use a bad language</b></li>
+            </ul>
+            Down blow will be all the recent posts
+        </p>
+    </div>
     <form class='ui form'>
         <% if(!currentUserCodes) { %>
             <a href='/index/new' class=''><input type='text' placeholder='Add a new post' class=''></a>

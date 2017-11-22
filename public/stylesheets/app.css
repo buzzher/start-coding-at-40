@@ -14,6 +14,10 @@ i.icon {
     display: inline;
 }
 
+.header span {
+    color: rgba(191, 159, 78, .8);
+}
+
 hr.color1 {
     color: black;
 }
@@ -60,6 +64,16 @@ hr.color1 {
         font-size: 1em;
     }
     
+    .post_header {
+      font-size: .8em;  
+    }
+    .item_font_post {
+     font-size: 1em;   
+    }
+    .post_date {
+        background-color: rgba(250, 224, 157, .5);
+    }
+    
     /*comment area*/
     .container {
      width: 90%;   
@@ -77,4 +91,39 @@ hr.color1 {
     
     
     
+}
+
+ /* * * * * * * * * * * * landing page * * * * * * * * */
+.container_landing {
+    background: url(https://cdn.pixabay.com/photo/2017/11/17/20/50/reed-2958475_960_720.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-family: Lato;
+    height: 100%;
+}
+
+#content {
+    text-align: center;
+    padding-top: 25%;
+    text-shadow: 0px 4px 3px rgba(0, 0, 0, .4),
+                 0px 8px 13px rgba(0, 0, 0, .1),
+                 0px 18px 23px rgba(0, 0, 0, .1);
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 5em;
+  color: white;
+}
+h3 {
+  color: white;
+}
+.hr-landing {
+    width: 400px;
+    border-top: 1px solid #f8f8f8;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+}
+.btn-secondary {
+    background-color: rgba(255, 102, 26, .3);
 }
