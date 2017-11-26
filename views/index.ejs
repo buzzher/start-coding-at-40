@@ -1,6 +1,6 @@
 <% include partials/header %>
 
-<div class='ui text container'>
+<div class='ui text main container'>
     <div class='ui huge header'><span>Learn Coding After 40 App</span></div>
     <div class='ui'>
         <p>I so saw this <a href='https://www.womenwhocode.com/blog/patricia-ehrhardt-conquering-her-goals-and-coding-over-40' class=''>article</a> about Patricia Ehrhardt, so i thought why not to build a project, i will build a responsive website which allow users to sign up and write a post about their own story and can comment about articels of other users</p>
@@ -17,7 +17,10 @@
             Down blow will be all the recent posts
         </p>
     </div>
+    <div class=''><hr class='hr'></div>
+    
     <form class='ui form'>
+        <div class='header'></div>
         <% if(!currentUserCodes) { %>
             <a href='/index/new' class=''><input type='text' placeholder='Add a new post' class=''></a>
         <% } else { %>
@@ -39,9 +42,9 @@
                         <p> <%= user.body.substring(0, 100); %>..</p> <!-- make sure there is a body to each of the blog post -->
                     </div>
                     <div class='extra'>
-                        <a class='ui floated basic violet button' href='/index/<%= user._id %>'><!-- /space/ _id like 324234bfeuroh3ru3or -->
+                        <a class='btn btn-primary' href='/index/<%= user._id %>'><!-- /space/ _id like 324234bfeuroh3ru3or -->
                             Read More
-                            <i class='right chevron icon'></i>
+                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>

@@ -24,7 +24,7 @@
 
 <!-- *********************************** COMMENTS ************************** -->
 
-<div class='container well'>
+<div class='ui text container'>
     <div class='comment_link'>
         <form class='col-md-12 ui input input_comment'>
             <% if(!currentUserCodes) { %>
@@ -34,7 +34,7 @@
             <% } %>
         </form>
         <span class=''>
-            <a class='btn btn-success' href='/index/<%= CBShow._id %>/comments/new'>Add New Comment</a>
+            <a class='btn btn-success' href='/index/<%= CBShow._id %>/comments/new'>Add New Comment <i class="fa fa-comment" aria-hidden="true"></i></a>
         </span>
     </div>
     
@@ -55,10 +55,10 @@
             <% } else { } %>
             <%  %>
         </div>
-        
     <% }); %>
+    <div class='container'><a href='/index_temp' class=''>Home</a></div>
 </div>
 
-<div class='container'><a href='/' class=''>Home</a></div>
+
 
 <% include partials/footer %>

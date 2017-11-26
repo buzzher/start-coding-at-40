@@ -28,7 +28,10 @@ hr.color1 {
 
 .comment_link {
         display: inline-flex;
-    }
+}
+hr {
+    background-color: rgba(191, 159, 78, .8);
+}
 
  /* * * * * * * * * * * * * responsive grid * * * * * * * * * * * * * * * */
 
@@ -95,7 +98,7 @@ hr.color1 {
 
  /* * * * * * * * * * * * landing page * * * * * * * * */
 .container_landing {
-    background: url(https://cdn.pixabay.com/photo/2017/11/17/20/50/reed-2958475_960_720.jpg);
+    background: url(https://cdn.pixabay.com/photo/2016/12/16/15/25/christmas-1911637__340.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
