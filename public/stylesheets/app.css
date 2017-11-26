@@ -32,6 +32,12 @@ hr.color1 {
 hr {
     background-color: rgba(191, 159, 78, .8);
 }
+.pull-right {
+        float: right;
+        margin-top: 10px;
+}
+
+
 
  /* * * * * * * * * * * * * responsive grid * * * * * * * * * * * * * * * */
 
@@ -48,9 +54,7 @@ hr {
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
     
-    .collapse {
-        display: block;
-    }
+    
     
     .comment_link .input_comment input {
         width: 300px;
@@ -91,6 +95,7 @@ hr {
     .comment_link .btn {
         display: none;
     }
+    
     
     
     
