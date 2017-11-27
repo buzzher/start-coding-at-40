@@ -1,30 +1,32 @@
 <% include partials/header %>
 
-<div class='ui text container segment'>
-    <div class='ui huge header'><span class='post_header'><%= CBShow.title %></span></div>
-    <div class='ui top attached'>
-        <div class='item item_font_post'>
-            <img class='ui centered rounded image' src='<%=  %>'>
-            <div class='content'>
-                <span class='post_date'><%= CBShow.create.toDateString() %></span>
+<div class='ui text main container segment'>
+    <div class='bk-show-title'>
+        <div class='ui huge header'><span class='post_header'><%= CBShow.title %></span></div>
+        <div class='ui top attached background-show'>
+            <div class='item item_font_post'>
+                <img class='ui centered rounded image' src='<%=  %>'>
+                <div class='content'>
+                    
+                </div>
+                <div class='description'>
+                    <p><%= CBShow.body %></p>
+                    <p><em>Submited By <%= CBShow.author.username %></em></p>
+                </div>
+                <% if(currentUserCodes && CBShow.author.id.equals(currentUserCodes._id)) { %>
+                <a class='ui orange basic tiny button' href='/index/<%= CBShow._id %>/edit'>Edit</a>
+                <form id='delete' class='' action='/index/<%= CBShow._id %>?_method=DELETE' method='POST'>
+                    <button class='ui red basic tiny button'>DELETE</button>
+                </form><span class='post_date pull-right'><%= CBShow.create.toDateString() %></span>
+                <% } else { } %>
             </div>
-            <div class='description'>
-                <p><%= CBShow.body %></p>
-                <p><em>Submited By <%= CBShow.author.username %></em></p>
-            </div>
-            <% if(currentUserCodes && CBShow.author.id.equals(currentUserCodes._id)) { %>
-            <a class='ui orange basic tiny button' href='/index/<%= CBShow._id %>/edit'>Edit</a>
-            <form id='delete' class='' action='/index/<%= CBShow._id %>?_method=DELETE' method='POST'>
-                <button class='ui red basic tiny button'>DELETE</button>
-            </form>
-            <% } else { } %>
         </div>
     </div>
 </div>
 
 <!-- *********************************** COMMENTS ************************** -->
 
-<div class='ui text container'>
+<div class='ui text container comments'>
     <div class='comment_link'>
         <form class='col-md-12 ui input input_comment'>
             <% if(!currentUserCodes) { %>
@@ -56,7 +58,8 @@
             <%  %>
         </div>
     <% }); %>
-    <div class='container well'><a href='/index' class=''><button class='btn btn-primary pull-right'><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a></div>
+    <hr>
+    <div class=''><a href='/index' class=''><button class='btn btn-primary'><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a></div>
 </div>
 
 

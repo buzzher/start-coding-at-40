@@ -1,3 +1,7 @@
+body {
+    background-color: rgba(204, 204, 255, .5);
+}
+
 i.icon {
     font-size: 2em;
 }
@@ -37,6 +41,17 @@ hr {
         margin-top: 10px;
 }
 
+ /* * * * * * * * * * * * * * * * * show * * * * * * * * * * * * * * */
+ 
+ .bk-show-title {
+     
+     padding: 5px 3px;
+ }
+ .bk-show-title .header {
+     background-color: rgba(191, 159, 78, .09);
+     padding-left: 10px;
+ }
+ 
 
 
  /* * * * * * * * * * * * * responsive grid * * * * * * * * * * * * * * * */
@@ -96,7 +111,9 @@ hr {
         display: none;
     }
     
-    
+    .footer {
+        font-size: .8em;
+    }
     
     
 }
@@ -128,10 +145,21 @@ h3 {
   color: white;
 }
 .hr-landing {
-    width: 400px;
+    /*width: 400px;*/
     border-top: 1px solid #f8f8f8;
     border-bottom: 1px solid rgba(0, 0, 0, .2);
 }
 .btn-secondary {
     background-color: rgba(255, 102, 26, .3);
+}
+
+ /* * * * * * * * * * * * * footer * * * * * * * * * * * * * * * */
+
+.footer {
+    
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(26, 26, 26, .5);
+    text-align: center;
 }
