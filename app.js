@@ -50,6 +50,12 @@ app.get('/index_temp', function(req, res) {
     res.render('index_temp');
 });
 
+app.get('/about', function(req, res) {
+    res.render('about');
+});
+
+//  - - - - - - - CURD - - - - - - - - -
+
 // GET
 app.get('/index', function(req, res) {
     console.log('INDEX ' + req.user + ' - if undefind, need to log in');

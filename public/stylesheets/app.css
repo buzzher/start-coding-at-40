@@ -52,6 +52,44 @@ hr {
      padding-left: 10px;
  }
  
+ /* * * * * * * * about * * * * * * * * */
+ .jumbotron {
+    background: url(https://cdn.pixabay.com/photo/2017/11/07/00/07/fantasy-2925250_960_720.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-family: Lato;
+    height: 100%;
+}
+
+.jumbotron .about-sm-h1 {
+    color: #000;
+    text-align: center;
+    font-family: 'Shrikhand', cursive;
+}
+
+.jumbotron .about-sm-p {
+    font-size: 2em;
+    text-align: center;
+}
+
+.jumbotron .about-sm-h3 {
+    font-size: 3em;
+    color: #000;
+    text-align: center;
+}
+
+ /* * * * * * * * * * * * * footer * * * * * * * * * * * * * * * */
+
+.footer {
+    
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(26, 26, 26, .5);
+    text-align: center;
+}
+ 
 
 
  /* * * * * * * * * * * * * responsive grid * * * * * * * * * * * * * * * */
@@ -77,13 +115,26 @@ hr {
     .comment_link .btn {
         font-size: smaller;
     }
+    
+     /* * * * * * about * * * * * */
+    /* .jumbotron .about-sm-h3 {*/
+    /*    font-size: 2em;*/
+        
+    /*}*/
+    
+    /*.jumbotron .about-sm-p {*/
+    /*    font-size: 1.5em;*/
+    /*    margin-top: 10px;*/
+    /*    text-align: center;*/
+    /*}*/
+    
 }
  
 /* Landscape phones and down */
 @media (max-width: 480px) {
     /*navbar*/
     .navbar a {
-        font-size: 1em;
+        font-size: 1.em;
     }
     
     .post_header {
@@ -109,6 +160,24 @@ hr {
     }
     .comment_link .btn {
         display: none;
+    }
+    
+     /* * * * * * about * * * * */
+     .jumbotron .about-sm-h1 {
+        font-size: 3em;
+        margin: 100px 0 50px 0;
+        
+        
+    }
+     
+    .jumbotron .about-sm-h3 {
+        font-size: 1.8em;
+        
+    }
+    
+    .jumbotron .about-sm-p {
+        font-size: 1.2em;
+        text-align: center;
     }
     
     .footer {
@@ -153,13 +222,4 @@ h3 {
     background-color: rgba(255, 102, 26, .3);
 }
 
- /* * * * * * * * * * * * * footer * * * * * * * * * * * * * * * */
-
-.footer {
-    
-    width: 100%;
-    left: 0;
-    bottom: 0;
-    background-color: rgba(26, 26, 26, .5);
-    text-align: center;
-}
+ 
