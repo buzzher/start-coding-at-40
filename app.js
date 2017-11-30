@@ -50,8 +50,14 @@ app.get('/index_temp', function(req, res) {
     res.render('index_temp');
 });
 
+// ABOUT
 app.get('/about', function(req, res) {
     res.render('about');
+});
+
+// CONTACT
+app.get('/contact', function(req, res) {
+    res.render('contact');
 });
 
 //  - - - - - - - CURD - - - - - - - - -

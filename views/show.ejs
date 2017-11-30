@@ -2,15 +2,15 @@
 
 <div class='ui text main container segment'>
     <div class='bk-show-title'>
-        <div class='ui huge header'><span class='post_header'><%= CBShow.title %></span></div>
+        <div class='ui huge header'><span class='title-color'><%= CBShow.title %></span></div>
         <div class='ui top attached background-show'>
             <div class='item item_font_post'>
                 <img class='ui centered rounded image' src='<%=  %>'>
                 <div class='content'>
                     
                 </div>
-                <div class='description'>
-                    <p><%= CBShow.body %></p>
+                <div class='description bk-show-body'>
+                    <p class=''><%= CBShow.body %></p>
                     <p><em>Submited By <%= CBShow.author.username %></em></p>
                 </div>
                 <% if(currentUserCodes && CBShow.author.id.equals(currentUserCodes._id)) { %>

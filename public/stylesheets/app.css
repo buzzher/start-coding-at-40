@@ -19,7 +19,7 @@ i.icon {
 }
 
 .header span {
-    color: rgba(191, 159, 78, .8);
+    color: rgba(38, 38, 38, .8);
 }
 
 hr.color1 {
@@ -34,7 +34,7 @@ hr.color1 {
         display: inline-flex;
 }
 hr {
-    background-color: rgba(191, 159, 78, .8);
+    color: rgba(191, 159, 78, .8);
 }
 .pull-right {
         float: right;
@@ -50,6 +50,17 @@ hr {
  .bk-show-title .header {
      background-color: rgba(191, 159, 78, .09);
      padding-left: 10px;
+     
+ }
+ 
+.bk-show-body {
+     background-color: rgba(191, 159, 78, .05);
+     padding-left: 10px;
+     color: #000;
+ }
+ 
+ .title-color {
+     color: #000;
  }
  
  /* * * * * * * * about * * * * * * * * */
